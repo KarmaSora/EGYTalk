@@ -153,8 +153,16 @@ class DbEgyTalk
     */
    function addUser($fname, $sname, $user, $pwd){
       $pwd = password_hash($pwd, PASSWORD_DEFAULT);
+      $user = filter_input(INPUT_GET, $user,FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $fname = filter_input(INPUT_GET, $fname,FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $sname = filter_input(INPUT_GET, $sname,FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-      // KOD!
+
+      // KOD! 
+      $sqlCode = "INSERT INTO user(uid, firstname, surname, username, password)
+      VALUES ([value-1],$fname,$sname,$user,$pwd)";
+      
+      $stmt = $this->db->prepare($sqlCode); //fix here!!!
 
       return $stmt->execute();
    }

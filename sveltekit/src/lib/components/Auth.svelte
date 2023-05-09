@@ -8,7 +8,13 @@
 </script>
 
 <form on:submit|preventDefault={signIn}>
-
+<label for="username">username</label>
+<input type="text">
+<br>
+<label for="password">password</label>
+<input type="password">
+<br>
+<input type="submit" value ="Logga In">
 </form>
 
 <style lang="scss">
