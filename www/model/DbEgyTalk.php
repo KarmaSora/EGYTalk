@@ -17,7 +17,7 @@ class DbEgyTalk
     *
     * Skapar en koppling till databaseb egytalk
     */
-   public function __construct() {
+   public function __construct(){
       // Definierar konstanter med användarinformation.
       define('DB_USER', 'egytalk');
       define('DB_PASSWORD', '12345');
@@ -67,9 +67,21 @@ class DbEgyTalk
     * @param  $uid  användarID
     * @return $response användardata eller tom [] om ingen anvädare hittats eller fel inträffat
     */
-   function getUserFromUid($uid){
+   function getUserFromUid($uid)
+   {
       $response = [];
       // KOD!
+
+      $stmt = $this->db->prepare("SELECT username, uid FROM user WHERE uid = :uid");
+      $stmt->bindValue(":uid", $uid);
+      $stmt->execute();
+
+      /** Kontroll att resultat finns */
+      if ($stmt->rowCount() == 1) {
+         // Hämtar användaren, kan endast vara 1 person
+         $response = $stmt->fetch(PDO::FETCH_ASSOC);
+      }
+
       return $response;
    }
 
@@ -78,10 +90,14 @@ class DbEgyTalk
     *
     * @return array med alla poster
     */
-   function getAllPosts(){
+   function getAllPosts()
+   {
       $posts = [];
 
       // KOD!
+
+      $stmt = $this->db->prepare("SELECT post.* FROM post ");
+      $posts = $stmt->execute();
 
       return $posts;
    }
@@ -93,10 +109,13 @@ class DbEgyTalk
     * @param   $uid    användar-ID för användaren
     * @return  array med statusuppdateringar sorterade efter datum
     */
-   function getPosts($uid){
+   function getPosts($uid)
+   {
       $posts = [];
-
       // KOD!
+      $stmt = $this->db->prepare("SELECT post.* FROM post JOIN user WHERE user.uid = :uid");
+      $stmt->bindValue(":uid", $uid);
+      $posts = $stmt->execute();
 
       return $posts;
    }
@@ -107,11 +126,14 @@ class DbEgyTalk
     * @param  $pid postens ID-nummer
     * @return array med kommentarer sorterade efter datum
     */
-   function getComments($pid){
+   function getComments($pid)
+   {
       $comments = [];
 
       // KOD!
-
+      $stmt = $this->db->prepare("SELECT comment.* FROM comment WHERE user.pid = :pid");
+      $stmt->bindValue(":pid", $pid);
+      $comments = $stmt->execute();
       return $comments;
    }
 
@@ -122,7 +144,8 @@ class DbEgyTalk
     * @param  $postTxt   Postat inlägg
     * @return true om det lyckades, annars false
     */
-   function addPost($uid, $postTxt){
+   function addPost($uid, $postTxt)
+   {
       $postTxt = filter_var($postTxt, FILTER_SANITIZE_SPECIAL_CHARS);
       // KOD!
    }
@@ -135,10 +158,11 @@ class DbEgyTalk
     * @param  $comment   Kommentar
     * @return true om det lyckades, annars false
     */
-   function addComment($uid, $pid, $comment){
+   function addComment($uid, $pid, $comment)
+   {
       $pid = filter_var($pid, FILTER_SANITIZE_NUMBER_INT);
       $comment = filter_var($comment, FILTER_SANITIZE_SPECIAL_CHARS);
-      
+
       // KOD!
    }
 
@@ -151,17 +175,18 @@ class DbEgyTalk
     * @param  $pwd     Lösenord
     * @return true om det lyckades, annars false
     */
-   function addUser($fname, $sname, $user, $pwd){
+   function addUser($fname, $sname, $user, $pwd)
+   {
       $pwd = password_hash($pwd, PASSWORD_DEFAULT);
-      $user = filter_input(INPUT_GET, $user,FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-      $fname = filter_input(INPUT_GET, $fname,FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-      $sname = filter_input(INPUT_GET, $sname,FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $user = filter_input(INPUT_GET, $user, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $fname = filter_input(INPUT_GET, $fname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $sname = filter_input(INPUT_GET, $sname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 
       // KOD! 
       $sqlCode = "INSERT INTO user(uid, firstname, surname, username, password)
-      VALUES ([value-1],$fname,$sname,$user,$pwd)";
-      
+      VALUES (UUID(),$fname,$sname,$user,$pwd)";
+
       $stmt = $this->db->prepare($sqlCode); //fix here!!!
 
       return $stmt->execute();
@@ -171,11 +196,15 @@ class DbEgyTalk
     * Hämtar alla avändare i nätverket
     * @return array med användare
     */
-   function getUsers(){
+   function getUsers()
+   {
       $users = [];
-      
-      // KOD!
 
+      // KOD!
+      $stmt = $this->db->prepare("SELECT user.* FROM user ");
+      $users = $stmt->execute();
+
+      
       return $users;
    }
 
@@ -185,7 +214,8 @@ class DbEgyTalk
     * @param  $searchWord    Sökord
     * @return array med användare
     */
-   function findUsers($searchWord){
+   function findUsers($searchWord)
+   {
       $searchWord = filter_var($searchWord, FILTER_UNSAFE_RAW);
       $sql = "SELECT uid, firstname, surname FROM user WHERE firstname LIKE :search OR surname LIKE :search  ORDER BY surname, firstname";
       $stmt = $this->db->prepare($sql);
@@ -203,7 +233,8 @@ class DbEgyTalk
     * @param  $uid    användarens uid
     * @return json-obj med användardata, mail, phone
     */
-   function getSettings($uid){
+   function getSettings($uid)
+   {
       $settings = [];
 
       try {
@@ -212,7 +243,8 @@ class DbEgyTalk
 
          if ($stmt->execute())
             $settings = $stmt->fetch(PDO::FETCH_ASSOC);
-      } catch (Exception $e) {}
+      } catch (Exception $e) {
+      }
 
       return  $settings;
    }
@@ -226,7 +258,8 @@ class DbEgyTalk
     * @param  $settings array med inställningar, $settings['phone'], $settings['mail']
     * @return true om uppdateringen lyckades
     */
-   function setSettings($uid, $settings){
+   function setSettings($uid, $settings)
+   {
       $success = false;
 
       // KOD!
@@ -241,19 +274,20 @@ class DbEgyTalk
     * @param $pwd    Lösenord som skall testas
     * @return true   om löseordet är korrekt
     */
-    private function verifyPassword($uid, $pwd){
+   private function verifyPassword($uid, $pwd)
+   {
       $verified = false;
 
       try {
          $stmt = $this->db->prepare("SELECT password FROM user WHERE uid = :uid ");
          $stmt->bindValue(":uid", $uid);
 
-         if ($stmt->execute()){
+         if ($stmt->execute()) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             $verified = password_verify($pwd, $user['password']);
          }
-            
-      } catch (Exception $e) {}
+      } catch (Exception $e) {
+      }
 
       return $verified;
    }
@@ -266,7 +300,8 @@ class DbEgyTalk
     * @param  $pwd      Nytt lösenord
     * @return true om uppdateringen lyckades
     */
-   function setPassword($uid, $oldpwd, $pwd){
+   function setPassword($uid, $oldpwd, $pwd)
+   {
       $success = false;
 
       // KOD!

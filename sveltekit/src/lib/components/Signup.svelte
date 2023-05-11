@@ -4,6 +4,14 @@
    let result = { success: false };
 
    async function signUp(e) {
+      const data = new FormData(e.target);
+      const url = "/api/adduser.php";
+      const respons = await fetch(url, {
+         method: "post",
+         body: data
+      });
+      const result = await respons.json();
+      $user = result.success;
    }
 </script>
 
@@ -25,7 +33,7 @@
    </div>
 {/if}
 
-<form on:submit|preventDefault={signUp}>
+<form method="post" on:submit|preventDefault={signUp}>
    <label for="fn">Förnamn</label>
    <input id="fn" type="text" name="firstname" />
 

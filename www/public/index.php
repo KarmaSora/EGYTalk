@@ -9,6 +9,7 @@
     <h1>Error</h1>
     <?php
         echo "<h2>Felaktig sökväg!</h2>";
+        echo password_hash("12345", PASSWORD_DEFAULT);
     ?>
 </body>
 </html>

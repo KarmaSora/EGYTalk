@@ -4,17 +4,26 @@
 
    async function signIn(e) {
       // Kod!
+      const data = new FormData(e.target);
+      const url = "/api/auth.php";
+
+      const response = await fetch(url, {
+         method: "post",
+         body: data,
+      });
+      const check = await response.json();
+      $user = check;
    }
 </script>
 
-<form on:submit|preventDefault={signIn}>
-<label for="username">username</label>
-<input type="text">
-<br>
-<label for="password">password</label>
-<input type="password">
-<br>
-<input type="submit" value ="Logga In">
+<form method="post" on:submit|preventDefault={signIn}>
+   <label for="username">username</label>
+   <input type="text" name="username"/>
+   <br />
+   <label for="pwd">password</label>
+   <input type="password" name= "pwd"/>
+   <br />
+   <input type="submit" value="Logga In" />
 </form>
 
 <style lang="scss">
