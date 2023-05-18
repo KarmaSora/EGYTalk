@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Autentiserar användare.
  * Om inget postat så kontrolleras om sessionsvariabeln lever (=)
@@ -9,7 +10,7 @@
  */
 session_start();
 
-include('../../model/DbEgyTalk.php'); 
+include('../../model/DbEgyTalk.php');
 $db = new DbEgyTalk();
 
 $result['auth'] = false;
@@ -30,4 +31,4 @@ if (isset($user) && !empty($user)) {
 }
 
 header('Content-Type: application/json');
-echo json_encode($result,JSON_UNESCAPED_UNICODE);
+echo json_encode($result, JSON_UNESCAPED_UNICODE);

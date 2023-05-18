@@ -16,11 +16,10 @@ $db = new DbEgyTalk();
 $success = false;
 
 // KOD!
-if(isset($_POST['firstname'],$_POST['surname'],$_POST['user'], $_POST['pwd']) 
-&& !empty($_POST['user'])&& !empty($_POST['pwd'])&& !empty($_POST['firstname'])&& !empty($_POST['surname'])){
+if(isset($_POST['firstname']) && isset($_POST['surname']) && isset($_POST['user']) && isset($_POST['pwd']) ){
  
-    $stmt = $db->addUser($_POST['firstname'],$_POST['surname'],$_POST['user'], $_POST['pwd']);
-    
+ $stmt = $db->addUser($_POST['firstname'],$_POST['surname'],$_POST['user'],$_POST['pwd']);
+ 
 }
 
 $result['success'] =  $success;

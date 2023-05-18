@@ -45,7 +45,6 @@ class DbEgyTalk
       $stmt->bindValue(":user", $userName);
       $stmt->execute();
 
-
       /* Kontroll att resultat finns */
       if ($stmt->rowCount() == 1) {
          // Hämtar användaren, kan endast vara 1 person
@@ -72,14 +71,17 @@ class DbEgyTalk
       $response = [];
       // KOD!
 
-      $stmt = $this->db->prepare("SELECT username, uid FROM user WHERE uid = :uid");
+      $stmt = $this->db->prepare("SELECT * FROM user WHERE uid = :uid");
       $stmt->bindValue(":uid", $uid);
       $stmt->execute();
 
       /** Kontroll att resultat finns */
       if ($stmt->rowCount() == 1) {
          // Hämtar användaren, kan endast vara 1 person
-         $response = $stmt->fetch(PDO::FETCH_ASSOC);
+         $user = $stmt->fetch(PDO::FETCH_ASSOC);
+         $response['uid'] = $user['uid'];
+         $response['firstname'] = $user['firstname'];
+         $response['surname'] = $user['surname'];
       }
 
       return $response;
@@ -175,17 +177,15 @@ class DbEgyTalk
     * @param  $pwd     Lösenord
     * @return true om det lyckades, annars false
     */
-   function addUser($fname, $sname, $user, $pwd)
-   {
+   function addUser($fname, $sname, $user, $pwd){
       $pwd = password_hash($pwd, PASSWORD_DEFAULT);
-      $user = filter_input(INPUT_GET, $user, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-      $fname = filter_input(INPUT_GET, $fname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-      $sname = filter_input(INPUT_GET, $sname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $user = filter_input(INPUT_POST, $user, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $fname = filter_input(INPUT_POST, $fname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $sname = filter_input(INPUT_POST, $sname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 
       // KOD! 
-      $sqlCode = "INSERT INTO user(uid, firstname, surname, username, password)
-      VALUES (UUID(),$fname,$sname,$user,$pwd)";
+      $sqlCode = "INSERT INTO user(uid, firstname, surname, username, password) VALUES (UUID(),$fname,$sname,$user,$pwd)";
 
       $stmt = $this->db->prepare($sqlCode); //fix here!!!
 

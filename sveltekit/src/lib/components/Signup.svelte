@@ -8,13 +8,15 @@
       const url = "/api/adduser.php";
       const respons = await fetch(url, {
          method: "post",
-         body: data
+         body: data,
       });
-      const result = await respons.json();
-      $user = result.success;
+      const signUpData = await respons.json();
+      console.log(respons);
+      console.log(signUpData);
+
+      return signUpData.json();
    }
 </script>
-
 {#if result.success}
    <div class="blur">
       <div>

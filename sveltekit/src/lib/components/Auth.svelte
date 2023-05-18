@@ -13,15 +13,24 @@
       });
       const check = await response.json();
       $user = check;
+      /* 
+      console.log({ $user });
+      let newName = check.userdata.firstname;
+      console.log("this newName is in Auth component:");
+      console.log({ newName });
+      console.log("---" )
+      console.log($user.auth);
+      */
+      goto("/");
    }
 </script>
 
 <form method="post" on:submit|preventDefault={signIn}>
    <label for="username">username</label>
-   <input type="text" name="username"/>
+   <input type="text" name="username" />
    <br />
    <label for="pwd">password</label>
-   <input type="password" name= "pwd"/>
+   <input type="password" name="pwd" />
    <br />
    <input type="submit" value="Logga In" />
 </form>

@@ -1,6 +1,6 @@
 <script>
    import Auth from "$lib/components/Auth.svelte";
-   import { goto } from '$app/navigation';
+   import { goto } from "$app/navigation";
 </script>
 
 <aside>
@@ -10,7 +10,7 @@
    <h1>EGY Talk Login</h1>
    <Auth />
    <p>eller</p>
-   <button on:click={() => goto('/createaccount')}>Skapa Konto</button>
+   <button on:click={() => goto("/createaccount")}>Skapa Konto</button>
 </section>
 
 <style lang="scss">
@@ -51,4 +51,3 @@
       }
    }
 </style>
-
