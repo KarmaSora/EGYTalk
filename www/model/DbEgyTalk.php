@@ -183,11 +183,15 @@ class DbEgyTalk
       $fname = filter_input(INPUT_POST, $fname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
       $sname = filter_input(INPUT_POST, $sname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-
       // KOD! 
-      $sqlCode = "INSERT INTO user(uid, firstname, surname, username, password) VALUES (UUID(),$fname,$sname,$user,$pwd)";
+      $code = "INSERT INTO user(uid, firstname, surname, username, password) VALUES (UUID(),:fn,:sn,:user,:pwd)";
+      $stmt =  $this->db->prepare($code);
 
-      $stmt = $this->db->prepare($sqlCode); //fix here!!!
+      $stmt->bindValue(":fn", $fname);
+      $stmt->bindValue(":sn", $sname);
+      $stmt->bindValue(":user", $user);
+      $stmt->bindValue(":pwd", $pwd);
+
 
       return $stmt->execute();
    }
@@ -201,8 +205,9 @@ class DbEgyTalk
       $users = [];
 
       // KOD!
-      $stmt = $this->db->prepare("SELECT user.* FROM user ");
-      $users = $stmt->execute();
+      $stmt = $this->db->prepare("SELECT * FROM user ");
+      $stmt->execute();
+      $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       
       return $users;

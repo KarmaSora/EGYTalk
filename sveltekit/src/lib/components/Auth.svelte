@@ -13,14 +13,7 @@
       });
       const check = await response.json();
       $user = check;
-      /* 
-      console.log({ $user });
-      let newName = check.userdata.firstname;
-      console.log("this newName is in Auth component:");
-      console.log({ newName });
-      console.log("---" )
-      console.log($user.auth);
-      */
+
       goto("/");
    }
 </script>

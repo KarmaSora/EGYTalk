@@ -6,15 +6,16 @@
    async function signUp(e) {
       const data = new FormData(e.target);
       const url = "/api/adduser.php";
+      
       const respons = await fetch(url, {
          method: "post",
          body: data,
       });
       const signUpData = await respons.json();
-      console.log(respons);
-      console.log(signUpData);
+      
+      console.log({respons});
+      console.log({signUpData});
 
-      return signUpData.json();
    }
 </script>
 {#if result.success}
