@@ -13,6 +13,8 @@
       });
       const check = await response.json();
       $user = check;
+      console.log("log from auth.svelte" + {$user})
+      console.log({$user});
 
       goto("/");
    }

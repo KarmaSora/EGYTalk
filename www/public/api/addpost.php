@@ -10,6 +10,19 @@ $success = false;
 
 // KOD!
 
+
+if (isset($_POST['postMsg'])) {
+
+        $postTxt = $_POST['postMsg']; 
+
+        $stmt = $db->addPost($uid, $postTxt);
+        
+        $success = true; // sätter success till true efter att ha lagt till post till databasen
+    
+}
+
+
+
 $result['success'] =  $success;
 
 header('Content-Type: application/json');

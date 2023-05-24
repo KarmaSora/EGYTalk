@@ -17,7 +17,8 @@ class DbEgyTalk
     *
     * Skapar en koppling till databaseb egytalk
     */
-   public function __construct(){
+   public function __construct()
+   {
       // Definierar konstanter med användarinformation.
       define('DB_USER', 'egytalk');
       define('DB_PASSWORD', '12345');
@@ -37,7 +38,8 @@ class DbEgyTalk
     * @param  $password  Lösenord
     * @return $response användardata eller tom [] om inloggning misslyckas
     */
-   function auth($userName, $password){
+   function auth($userName, $password)
+   {
       $response = [];
 
       /* Bygger upp sql frågan */
@@ -150,6 +152,13 @@ class DbEgyTalk
    {
       $postTxt = filter_var($postTxt, FILTER_SANITIZE_SPECIAL_CHARS);
       // KOD!
+      $stmt =  $this->db->prepare("INSERT INTO post(pid, uid, post_txt, date) VALUES (Null,:uid,:postTxt,Null");
+      $stmt->bindValue(":uid", $uid);
+      $stmt->bindValue(":postTxt", $postTxt);
+
+
+
+      return $stmt->execute();
    }
 
    /**
@@ -177,22 +186,23 @@ class DbEgyTalk
     * @param  $pwd     Lösenord
     * @return true om det lyckades, annars false
     */
-   function addUser($fname, $sname, $user, $pwd){
+   function addUser($fname, $sname, $user, $pwd)
+   {
+
       $pwd = password_hash($pwd, PASSWORD_DEFAULT);
-      $user = filter_input(INPUT_POST, $user, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-      $fname = filter_input(INPUT_POST, $fname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-      $sname = filter_input(INPUT_POST, $sname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+      $user = filter_var($user, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $fname = filter_var($fname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+      $sname = filter_var($sname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
       // KOD! 
-      $code = "INSERT INTO user(uid, firstname, surname, username, password) VALUES (UUID(),:fn,:sn,:user,:pwd)";
+      $code = "INSERT INTO user(uid, firstname, surname, username, password) VALUES (UUID(), :fn, :sn, :user, :pwd)";
       $stmt =  $this->db->prepare($code);
 
       $stmt->bindValue(":fn", $fname);
       $stmt->bindValue(":sn", $sname);
       $stmt->bindValue(":user", $user);
       $stmt->bindValue(":pwd", $pwd);
-
-
       return $stmt->execute();
    }
 
@@ -209,7 +219,7 @@ class DbEgyTalk
       $stmt->execute();
       $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-      
+
       return $users;
    }
 

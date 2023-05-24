@@ -9,7 +9,9 @@
       
       const respons = await fetch(url, {
          method: "post",
+         credentials: "include",
          body: data,
+
       });
       const signUpData = await respons.json();
       

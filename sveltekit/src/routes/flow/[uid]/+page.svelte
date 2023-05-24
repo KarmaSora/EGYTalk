@@ -20,6 +20,7 @@
    });
 
    let name = "Xxxx Yyyy";
+ //  name = $user.userdata.firstname + " " + $user.userdata.surname;
 
 
 </script>
@@ -28,6 +29,13 @@
 
 <section>
    <!-- Rendera flödet från användare med [uid] -->
+<PostForm/>
+
+<Post />
+
+<CommentForm />
+
+<Comment />
 </section>
 
 <style lang="scss">

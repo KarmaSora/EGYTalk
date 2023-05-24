@@ -20,7 +20,8 @@
 
 <section>
    <!-- Rendera flödet  -->
-   <h2>hello there- karma</h2>
+   <h2>hello there - karma</h2>
+   
 </section>
 
 <style lang="scss">
