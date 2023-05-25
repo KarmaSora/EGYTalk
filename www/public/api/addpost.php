@@ -13,9 +13,9 @@ $success = false;
 
 if (isset($_POST['postMsg'])) {
 
-        $postTxt = $_POST['postMsg']; 
+        $postMsg = $_POST['postMsg']; 
 
-        $stmt = $db->addPost($uid, $postTxt);
+        $stmt = $db->addPost($uid, $postMsg);
         
         $success = true; // sätter success till true efter att ha lagt till post till databasen
     

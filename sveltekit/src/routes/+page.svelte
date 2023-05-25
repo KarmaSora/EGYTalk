@@ -11,7 +11,6 @@
 
    afterNavigate(async () => {
       $user = await auth();
-      
       if (!$user.auth) {
          goto("/login");
       }
@@ -20,7 +19,6 @@
 
 <section>
    <!-- Rendera flödet  -->
-   <h2>hello there - karma</h2>
    
 </section>
 

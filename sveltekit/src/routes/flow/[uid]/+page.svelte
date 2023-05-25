@@ -1,5 +1,5 @@
 <script>
-   import { page } from '$app/stores';
+   import { page } from "$app/stores";
    import Load from "$lib/components/Load.svelte";
    import PostForm from "$lib/components/PostForm.svelte";
    import Post from "$lib/components/Post.svelte";
@@ -16,26 +16,32 @@
 
       if (!$user.auth) {
          goto("/login");
+      } else {
+         name = $user.userdata.firstname + " " + $user.userdata.surname;
+         let userUid = $user.userdata.uid;
+         console.log("this log is from [uid] from flow");
+         console.log({ userUid });
       }
    });
-
+   let uid = $page.params.uid;
+   console.log("this is the new uid with params: "+uid);
    let name = "Xxxx Yyyy";
- //  name = $user.userdata.firstname + " " + $user.userdata.surname;
-
-
 </script>
 
 <h1>{name} TALK</h1>
 
 <section>
    <!-- Rendera flödet från användare med [uid] -->
-<PostForm/>
+   <PostForm />
 
-<Post />
+   <!--
+    <Post />
 
-<CommentForm />
+   <CommentForm />
 
-<Comment />
+   <Comment />
+
+   -->
 </section>
 
 <style lang="scss">

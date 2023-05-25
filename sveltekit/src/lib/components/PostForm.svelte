@@ -29,7 +29,7 @@
  <h1>post a new msg</h1>
 
  <textarea name="postMsg" id="PostTextArea" value="post your msg here" cols="30" rows="10"></textarea>
- <input type="hidden" value = $user.userdata.uid>
+ <input type="hidden"  value = $user.userdata.uid name = userID>
 
  <button type="submit">postMessage</button>
 
