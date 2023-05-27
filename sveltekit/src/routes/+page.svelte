@@ -15,11 +15,36 @@
          goto("/login");
       }
    });
+
+   async function getPosts() {
+      const url = "/api/getallposts.php";
+      const respons = await fetch(url);
+      const allPostsData = await respons.json();
+      return allPostsData;
+   }
 </script>
 
 <section>
    <!-- Rendera flödet  -->
-   
+
+   <PostForm />
+   <!--  (1) Postform, (2) Post , (3) comments-->
+
+   {#await getPosts() then allPostsData}
+      {#each allPostsData as SinglePost}
+         <Post post={SinglePost} />
+         <CommentForm />
+         {#each allPostsData as SingleComment}
+          <Comment comment={SingleComment} />
+         {/each}
+      {/each}
+   {/await}
+
+   <!-- 
+   <CommentForm />
+   <Comment />
+
+   -->
 </section>
 
 <style lang="scss">

@@ -2,12 +2,16 @@
    /**
     * Data som kommer in i komponenten
     * <Post post = {...} />
-    */  
-    export let post;
+    */
+   export let post;
 </script>
 
 <article>
-
+   <h2> post:{post.pid} {post.firstname} {post.surname}</h2>
+   <br>
+   <p>{post.post_txt}</p>
+   <br>
+   <p>{post.date}</p>
 </article>
 
 <style lang="scss">

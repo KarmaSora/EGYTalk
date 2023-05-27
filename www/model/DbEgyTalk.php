@@ -99,9 +99,37 @@ class DbEgyTalk
       $posts = [];
 
       // KOD!
+/*
+      $stmt = $this->db->prepare("SELECT post.*, user.firstname, user.surname FROM post JOIN user WHERE post.uid = user.uid ORDER BY post.date");
+      $stmt->execute();
 
-      $stmt = $this->db->prepare("SELECT post.* FROM post ");
-      $posts = $stmt->execute();
+      $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+*/
+
+
+  $sqlkod = "SELECT post.*, user.firstname, user.surname FROM post JOIN user WHERE post.uid = user.uid ORDER BY post.date";
+  $stmt = $this->db->prepare($sqlkod);
+  $stmt->execute();
+  $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+  $sqlkodGetComments = "SELECT comment.* FROM comment JOIN post WHERE comment.pid = post.pid ORDER BY comment.date";
+  $stmt2 = $this->db->prepare($sqlkodGetComments);
+  $stmt2->execute();
+  $arrayOfComments = $stmt2->fetchAll(PDO::FETCH_ASSOC);      
+
+  for ($i = 0; $i < count($posts); $i++) {
+    $posts[$i]['comments'] = [];
+    for ($j = 0; $j < count($arrayOfComments); $j++) {
+      if ($arrayOfComments[$j]['pid'] == $posts[$i]['pid']) {
+        $posts[$i]['comments'][] = $arrayOfComments[$j]['comment_txt'];
+      }
+    }
+  }
+
+
+
+
 
       return $posts;
    }
@@ -117,9 +145,33 @@ class DbEgyTalk
    {
       $posts = [];
       // KOD!
+      /*  
       $stmt = $this->db->prepare("SELECT post.* FROM post JOIN user WHERE user.uid = :uid");
       $stmt->bindValue(":uid", $uid);
       $posts = $stmt->execute();
+         */
+      $sqlkod = "SELECT post.*,user.uid,user.firstname,user.surname,user.username FROM post JOIN user WHERE user.uid = :userID ORDER BY post.date LIMIT 0,30  ";
+
+      // Kör frågan mot databasen egytalk och tabellen post 
+      $stmt = $this->db->prepare($sqlkod);
+      $stmt->bindValue(':userID', $uid);
+      $stmt->execute();
+      $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      $sqlkodGetComments = "SELECT comment.*, user.firstname, user.surname  FROM comment NATURAL JOIN user WHERE comment.pid = 1 LIMIT 0,30";
+
+      $stmt2 = $this->db->prepare($sqlkodGetComments);
+      $stmt2->execute();
+      $arrayOfComments = $stmt2->fetchAll(PDO::FETCH_ASSOC);      //arrayOfComments[] motsvarar en array med namnet posts som det skulle kallas enlgit uppgiften
+
+      for ($i = 0; $i < count($posts); $i++) {
+         $posts[$i]['comments'] = [];
+         for ($j = 0; $j < count($arrayOfComments); $j++) {
+            if ($arrayOfComments[$j]['pid'] == $posts[$i]['pid']) {
+               $posts[$i]['comments'][] = $arrayOfComments[$j]['comment_txt'];
+            }
+         }
+      }
 
       return $posts;
    }
@@ -150,13 +202,12 @@ class DbEgyTalk
     */
    function addPost($uid, $postTxt)
    {
-      $postTxt = filter_var($postTxt, FILTER_SANITIZE_SPECIAL_CHARS);
+      $cleanedPostTxt = filter_var($postTxt, FILTER_SANITIZE_SPECIAL_CHARS);
       // KOD!
-      $stmt =  $this->db->prepare("INSERT INTO post(pid, uid, post_txt, date) VALUES (Null,:uid,:postTxt,Null");
+      $code = "INSERT INTO post(uid, post_txt, date) VALUES (:uid,:postTxt,NOW())";
+      $stmt =  $this->db->prepare($code);
       $stmt->bindValue(":uid", $uid);
-      $stmt->bindValue(":postTxt", $postTxt);
-
-
+      $stmt->bindValue(":postTxt", $cleanedPostTxt);
 
       return $stmt->execute();
    }
