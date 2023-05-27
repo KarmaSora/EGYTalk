@@ -22,24 +22,10 @@
 
 </script>
 
-
-<!-- exemple på logik från gammalt momment, Kräver att exportera en varaible från componenten man skickar data till. 
-
-    {#await testData()}
-    <p>looding</p>
-  {:then testData } 
-  {#each testData.list as city}
-  <City CityData={city} />
-{/each}
-  {/await}
-
--->
-
 <form on:submit|preventDefault={addPost}>
  <h1>post a new msg</h1>
 
- <textarea name="postMsg" id="PostTextArea" value="post your msg here!" cols="30" rows="10"></textarea>
- <input type="hidden" id="userID" value = $user.userdata.uid name = userID>
+ <textarea name="postMsg" id="PostTextArea" value="post your comment here!" cols="30" rows="10"></textarea>
 
  <button type="submit">postMessage</button>
 

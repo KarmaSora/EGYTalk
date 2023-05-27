@@ -14,6 +14,22 @@ $db = new DbEgyTalk();
 $success = false;
 
 // Kod!
+// KOD!
+if (isset($_POST['commentMsg'])) {
+
+    $postMsg = $_POST['commentMsg'];
+    $result['comment'] = $postMsg;
+
+    $uid = $_SESSION['uid'];
+    $result['sessUID'] = $uid;
+
+  
+     $stmt = $db->addComment($uid, $pid, $postMsg);
+
+    $success = true; // sätter success till true efter att ha lagt till post till databasen
+
+}
+
 
 $result['success'] =  $success;
 

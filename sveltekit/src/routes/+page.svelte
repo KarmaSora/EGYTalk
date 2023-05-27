@@ -34,23 +34,21 @@
    {#await getPosts() then allPostsData}
       {#each allPostsData as SinglePost}
          <Post post={SinglePost} />
-         <CommentForm />
+         
+         <CommentForm postID={SinglePost.pid} />
+         <h2>this is it!! {SinglePost.pid}</h2>
          {#each SinglePost.comments as SingleComment}
           <Comment comment={SingleComment} />
          {/each}
       {/each}
    {/await}
 
-   <!-- 
-   <CommentForm />
-   <Comment />
-
-   -->
 </section>
 
 <style lang="scss">
    section {
       max-width: 540px;
+      margin-bottom: 15rem;
 
       hr {
          margin-bottom: 16px;
@@ -60,5 +58,7 @@
       div {
          border-left: 2px solid green;
       }
+
    }
+
 </style>
