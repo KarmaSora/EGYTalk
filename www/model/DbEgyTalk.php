@@ -107,13 +107,13 @@ class DbEgyTalk
 */
 
 
-  $sqlkod = "SELECT post.*, user.firstname, user.surname FROM post JOIN user WHERE post.uid = user.uid ORDER BY post.date";
+  $sqlkod = "SELECT post.*, user.firstname, user.surname FROM post JOIN user ON post.uid = user.uid ORDER BY post.date";
   $stmt = $this->db->prepare($sqlkod);
   $stmt->execute();
   $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-  $sqlkodGetComments = "SELECT comment.* FROM comment JOIN post WHERE comment.pid = post.pid ORDER BY comment.date";
+  $sqlkodGetComments = "SELECT comment.*, user.firstname, user.surname FROM comment JOIN post ON comment.pid = post.pid JOIN user ON user.uid = comment.uid ORDER BY comment.date";
   $stmt2 = $this->db->prepare($sqlkodGetComments);
   $stmt2->execute();
   $arrayOfComments = $stmt2->fetchAll(PDO::FETCH_ASSOC);      
@@ -122,7 +122,10 @@ class DbEgyTalk
     $posts[$i]['comments'] = [];
     for ($j = 0; $j < count($arrayOfComments); $j++) {
       if ($arrayOfComments[$j]['pid'] == $posts[$i]['pid']) {
-        $posts[$i]['comments'][] = $arrayOfComments[$j]['comment_txt'];
+         
+      //  $posts[$i]['comments']['comment_txt'] = $arrayOfComments[$j]['comment_txt'];
+        $posts[$i]['comments'][] = $arrayOfComments[$j];
+
       }
     }
   }

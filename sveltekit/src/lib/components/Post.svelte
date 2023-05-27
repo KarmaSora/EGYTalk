@@ -7,7 +7,7 @@
 </script>
 
 <article>
-   <h2> post:{post.pid} {post.firstname} {post.surname}</h2>
+   <h2> post:{post.pid}, {post.firstname} {post.surname}, {post.date}</h2>
    <br>
    <p>{post.post_txt}</p>
    <br>
