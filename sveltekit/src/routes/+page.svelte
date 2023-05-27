@@ -20,6 +20,7 @@
       const url = "/api/getallposts.php";
       const respons = await fetch(url);
       const allPostsData = await respons.json();
+      console.log({allPostsData});
       return allPostsData;
    }
 </script>
@@ -34,7 +35,7 @@
       {#each allPostsData as SinglePost}
          <Post post={SinglePost} />
          <CommentForm />
-         {#each allPostsData as SingleComment}
+         {#each SinglePost.comments as SingleComment}
           <Comment comment={SingleComment} />
          {/each}
       {/each}

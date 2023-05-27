@@ -9,7 +9,7 @@
 <article>
    <!--Ändra till comment.comment_txt-->
    <h3> commnetID: {comment.cid}, {comment.firstname} {comment.surname}, {comment.date}</h3>
-   <p>{comment.comments}</p>
+   <p>{comment.comment_txt}</p>
 </article>
 
 <style>
