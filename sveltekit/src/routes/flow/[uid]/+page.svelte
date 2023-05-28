@@ -23,25 +23,40 @@
          console.log({ userUid });
       }
    });
-   let uid = $page.params.uid;
-   console.log("this is the new uid with params: "+uid);
+   let Uuid = $page.params.uid;
+   console.log("this is the new uid with params: "+Uuid);
    let name = "Xxxx Yyyy";
+
+
+   async function getPostsByID() {
+      const url = "/api/getposts.php?uid="+Uuid;
+      console.log(url);
+      const respons = await fetch(url);
+      const allPostsData = await respons.json();
+    //  console.log({allPostsData});
+      return allPostsData;
+   }
 </script>
 
 <h1>{name} TALK</h1>
 
 <section>
-   <!-- Rendera flödet från användare med [uid] -->
    <PostForm />
+   <!--  (1) Postform, (2) Post , (3) comments-->
 
-   <!--
-    <Post />
+   {#await getPostsByID() then allPostsData}
+      {#each allPostsData as SinglePost}
+         <Post post={SinglePost} />
+         
+         <CommentForm postID={SinglePost.pid} />
+         <h2>this is it!! {SinglePost.pid}</h2>
+         {#each SinglePost.comments as SingleComment}
+          <Comment comment={SingleComment} />
+         {/each}
+         <hr>
+      {/each}
+   {/await}
 
-   <CommentForm />
-
-   <Comment />
-
-   -->
 </section>
 
 <style lang="scss">

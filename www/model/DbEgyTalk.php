@@ -138,22 +138,15 @@ class DbEgyTalk
    function getPosts($uid)
    {
       $posts = [];
-      // KOD!
-      /*  
-      $stmt = $this->db->prepare("SELECT post.* FROM post JOIN user WHERE user.uid = :uid");
-      $stmt->bindValue(":uid", $uid);
-      $posts = $stmt->execute();
-         */
-      $sqlkod = "SELECT post.*,user.uid,user.firstname,user.surname,user.username FROM post JOIN user WHERE user.uid = :userID ORDER BY post.date LIMIT 0,30  ";
-
-      // Kör frågan mot databasen egytalk och tabellen post 
-      $stmt = $this->db->prepare($sqlkod);
+   
+      $sqlkod = "SELECT post.*,user.uid,user.firstname,user.surname,user.username FROM post JOIN user ON user.uid = :userID ORDER BY post.date";
+      $newSQLCODE = "SELECT post.*, user.firstname, user.surname FROM post JOIN user ON post.uid = user.uid WHERE post.uid = :userID ORDER BY post.date";
+      $stmt = $this->db->prepare($newSQLCODE);
       $stmt->bindValue(':userID', $uid);
       $stmt->execute();
       $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-      $sqlkodGetComments = "SELECT comment.*, user.firstname, user.surname  FROM comment NATURAL JOIN user WHERE comment.pid = 1 LIMIT 0,30";
-
+      $sqlkodGetComments = "SELECT comment.*, user.firstname, user.surname FROM comment JOIN post ON comment.pid = post.pid JOIN user ON user.uid = comment.uid ORDER BY comment.date";
       $stmt2 = $this->db->prepare($sqlkodGetComments);
       $stmt2->execute();
       $arrayOfComments = $stmt2->fetchAll(PDO::FETCH_ASSOC);      //arrayOfComments[] motsvarar en array med namnet posts som det skulle kallas enlgit uppgiften
@@ -162,7 +155,9 @@ class DbEgyTalk
          $posts[$i]['comments'] = [];
          for ($j = 0; $j < count($arrayOfComments); $j++) {
             if ($arrayOfComments[$j]['pid'] == $posts[$i]['pid']) {
-               $posts[$i]['comments'][] = $arrayOfComments[$j]['comment_txt'];
+              // $posts[$i]['comments'][] = $arrayOfComments[$j]['comment_txt'];
+              $posts[$i]['comments'][] = $arrayOfComments[$j];
+
             }
          }
       }

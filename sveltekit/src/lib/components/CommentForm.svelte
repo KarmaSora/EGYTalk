@@ -4,34 +4,40 @@
    export let postID;
 
    async function addComment(e) {
-
       const data = new FormData(e.target);
       const url = "/api/addcomment.php";
-    
+
       const respons = await fetch(url, {
          method: "post",
          credentials: "include",
          body: data,
-
       });
       const CommentData = await respons.json();
-      
-      console.log({respons});
-      console.log({CommentData});
+
+      //  console.log({respons});
+      //    console.log({CommentData});
    }
-   console.log("---pidNum---");
-   console.log({postID});
-   console.log("---pidNum---");
-
-
+   // console.log("---pidNum---");
+   //console.log({postID});
+   //  console.log("---pidNum---");
 </script>
 
 <form on:submit|preventDefault={addComment}>
-   <input type="hidden" id="pidNumber" name="pidNumberForComment" bind:value={postID} >
-   <input type="text" name="commentMsg" id="CommentForPost" Value="post you comment here!">
-  
-   <input type="submit" name="commentButton" value="svara">  
-  </form>
+   <input
+      type="hidden"
+      id="pidNumber"
+      name="pidNumberForComment"
+      bind:value={postID}
+   />
+   <input
+      type="text"
+      name="commentMsg"
+      id="CommentForPost"
+      Value="post you comment here!"
+   />
+
+   <input type="submit" name="commentButton" value="svara" />
+</form>
 
 <style lang="scss">
    form {
@@ -42,7 +48,7 @@
       input[type="text"] {
          width: 100%;
       }
-      
+
       input[type="submit"] {
          border: none;
          border-radius: 4px;
