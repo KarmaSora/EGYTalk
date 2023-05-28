@@ -98,15 +98,6 @@ class DbEgyTalk
    {
       $posts = [];
 
-      // KOD!
-/*
-      $stmt = $this->db->prepare("SELECT post.*, user.firstname, user.surname FROM post JOIN user WHERE post.uid = user.uid ORDER BY post.date");
-      $stmt->execute();
-
-      $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-*/
-
-
   $sqlkod = "SELECT post.*, user.firstname, user.surname FROM post JOIN user ON post.uid = user.uid ORDER BY post.date";
   $stmt = $this->db->prepare($sqlkod);
   $stmt->execute();
@@ -226,9 +217,17 @@ class DbEgyTalk
    function addComment($uid, $pid, $comment)
    {
       $pid = filter_var($pid, FILTER_SANITIZE_NUMBER_INT);
-      $comment = filter_var($comment, FILTER_SANITIZE_SPECIAL_CHARS);
+      $cleanedComment = filter_var($comment, FILTER_SANITIZE_SPECIAL_CHARS);
 
       // KOD!
+      $code = "INSERT INTO comment(pid, comment_txt, date, uid) VALUES (:pid,:commentTxt, NOW(), :uid)";
+      $stmt =  $this->db->prepare($code);
+      $stmt->bindValue(":uid", $uid);
+      $stmt->bindValue(":pid", $pid);
+      $stmt->bindValue(":commentTxt", $cleanedComment);
+
+      return $stmt->execute();
+
    }
 
    /**

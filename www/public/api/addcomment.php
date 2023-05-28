@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Lägger till en kommentar
  * 
@@ -14,19 +15,26 @@ $db = new DbEgyTalk();
 $success = false;
 
 // Kod!
-// KOD!
 if (isset($_POST['commentMsg'])) {
 
     $postMsg = $_POST['commentMsg'];
+  //  $postMsg = "this is a comment, testing commentFOrm";
+
     $result['comment'] = $postMsg;
 
+    $pid = $_POST['pidNumberForComment'];
     $uid = $_SESSION['uid'];
     $result['sessUID'] = $uid;
 
-  
-     $stmt = $db->addComment($uid, $pid, $postMsg);
+    $stmt = $db->addComment($uid, $pid, $postMsg);
 
     $success = true; // sätter success till true efter att ha lagt till post till databasen
+    $result['MsgUserID'] = $uid;
+    $result['MsgPostID'] = $pid;
+    $result['MsgComment'] = $postMsg;
+    $result['sqlStmt'] = $stmt;
+
+
 
 }
 

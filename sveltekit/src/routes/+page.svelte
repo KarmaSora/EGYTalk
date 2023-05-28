@@ -40,6 +40,7 @@
          {#each SinglePost.comments as SingleComment}
           <Comment comment={SingleComment} />
          {/each}
+         <hr>
       {/each}
    {/await}
 
