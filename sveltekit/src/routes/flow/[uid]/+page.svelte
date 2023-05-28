@@ -18,45 +18,62 @@
          goto("/login");
       } else {
          name = $user.userdata.firstname + " " + $user.userdata.surname;
+
          let userUid = $user.userdata.uid;
          console.log("this log is from [uid] from flow");
          console.log({ userUid });
       }
    });
    let Uuid = $page.params.uid;
-   console.log("this is the new uid with params: "+Uuid);
-   let name = "Xxxx Yyyy";
+   console.log("this is the new uid with params: " + Uuid);
+   let nameV2 = "Xxxx Yyyy";
 
+   let retrievedUerUID;
+   let retrievedUserFirstname;
+   let retrievedUserSurname;
 
    async function getPostsByID() {
-      const url = "/api/getposts.php?uid="+Uuid;
+      const url = "/api/getposts.php?uid=" + Uuid;
       console.log(url);
       const respons = await fetch(url);
       const allPostsData = await respons.json();
-    //  console.log({allPostsData});
+      console.log({ allPostsData });
+
+      if(allPostsData && allPostsData.length > 0){
+      retrievedUerUID = allPostsData[0].uid;
+      retrievedUserFirstname = allPostsData[0].firstname;
+      retrievedUserSurname = allPostsData[0].surname;
+   
+      console.log("------");
+      console.log({ retrievedUerUID });
+      console.log({ retrievedUserFirstname });
+      console.log({ retrievedUserSurname });
+      console.log("------");
+      nameV2 = retrievedUserFirstname + " " + retrievedUserSurname;
+      }
       return allPostsData;
    }
 </script>
 
-<h1>{name} TALK</h1>
+<h1>{nameV2} TALK</h1>
 
 <section>
    <PostForm />
    <!--  (1) Postform, (2) Post , (3) comments-->
-
-   {#await getPostsByID() then allPostsData}
+   {#await getPostsByID()}
+      <Load />
+   {:then allPostsData}
       {#each allPostsData as SinglePost}
          <Post post={SinglePost} />
-         
+
          <CommentForm postID={SinglePost.pid} />
          <h2>this is it!! {SinglePost.pid}</h2>
          {#each SinglePost.comments as SingleComment}
-          <Comment comment={SingleComment} />
+            <Comment comment={SingleComment} />
          {/each}
-         <hr>
+         <hr />
       {/each}
    {/await}
-
 </section>
 
 <style lang="scss">

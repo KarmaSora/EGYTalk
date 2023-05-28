@@ -11,11 +11,26 @@
          goto("/login");
       }
    });
+
+   async function getusers() {
+      const url = "/api/getusers.php";
+      const respons = await fetch(url);
+      const friendsOrUsers = await respons.json();
+      return friendsOrUsers;
+   }
 </script>
 
 <h1>Vänner</h1>
 <section>
-<Load /> <!-- mest för att visa hur den fungerar -->
+   {#await getusers()}
+      <Load /> <!-- mest för att visa hur den fungerar -->
+   {:then friends}
+      {#each friends as friend}
+         <p>{friend.firstname} {friend.surname}</p>
+         <a href="/flow/{friend.uid}">go to user</a>
+         <hr />
+      {/each}
+   {/await}
 </section>
 
 <style lang="scss">

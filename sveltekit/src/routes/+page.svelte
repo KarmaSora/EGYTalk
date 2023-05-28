@@ -20,30 +20,30 @@
       const url = "/api/getallposts.php";
       const respons = await fetch(url);
       const allPostsData = await respons.json();
-    //  console.log({allPostsData});
+      //  console.log({allPostsData});
       return allPostsData;
    }
 </script>
 
 <section>
+   <h1>EveryOnes Flow</h1>
    <!-- Rendera flödet  -->
 
    <PostForm />
-   <!--  (1) Postform, (2) Post , (3) comments-->
-
-   {#await getPosts() then allPostsData}
+   {#await getPosts()}
+      <Load />
+   {:then allPostsData}
       {#each allPostsData as SinglePost}
          <Post post={SinglePost} />
-         
+
          <CommentForm postID={SinglePost.pid} />
          <h2>this is it!! {SinglePost.pid}</h2>
          {#each SinglePost.comments as SingleComment}
-          <Comment comment={SingleComment} />
+            <Comment comment={SingleComment} />
          {/each}
-         <hr>
+         <hr />
       {/each}
    {/await}
-
 </section>
 
 <style lang="scss">
@@ -59,7 +59,5 @@
       div {
          border-left: 2px solid green;
       }
-
    }
-
 </style>

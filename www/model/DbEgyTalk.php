@@ -271,6 +271,7 @@ class DbEgyTalk
       return $users;
    }
 
+
    /**
     * Söker efter användare.
     *

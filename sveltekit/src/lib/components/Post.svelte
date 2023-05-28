@@ -23,6 +23,7 @@
       margin-top: 6px;
       margin-bottom: 6px;
       background-color: white;
+      border-left: 5px solid red;
 
       p {
          font-size: 1.6rem;
