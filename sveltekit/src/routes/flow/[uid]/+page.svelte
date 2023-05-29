@@ -17,7 +17,7 @@
       if (!$user.auth) {
          goto("/login");
       } else {
-         name = $user.userdata.firstname + " " + $user.userdata.surname;
+       //  name = $user.userdata.firstname + " " + $user.userdata.surname;
 
          let userUid = $user.userdata.uid;
          console.log("this log is from [uid] from flow");
