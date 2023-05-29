@@ -4,31 +4,33 @@
    let result = { success: true };
 
    async function addPost(e) {
-
       const data = new FormData(e.target);
       const url = "/api/addpost.php";
-    
+
       const respons = await fetch(url, {
          method: "post",
          credentials: "include",
          body: data,
-
       });
       const PostData = await respons.json();
-      
-      console.log({respons});
-      console.log({PostData});
-   }
 
+      console.log({ respons });
+      console.log({ PostData });
+   }
 </script>
 
 <form on:submit|preventDefault={addPost}>
- <h1>post a new msg</h1>
+   <h1>post a new msg</h1>
 
- <textarea name="postMsg" id="PostTextArea" value="post your comment here!" cols="30" rows="10"></textarea>
+   <textarea
+      name="postMsg"
+      id="PostTextArea"
+      placeholder="post your comment here!"
+      cols="30"
+      rows="10"
+   />
 
- <button type="submit">postMessage</button>
-
+   <button type="submit">postMessage</button>
 </form>
 
 <style lang="scss">
@@ -36,7 +38,7 @@
       text-align: right;
       max-width: 540px;
 
-      h1{
+      h1 {
          text-align: left;
       }
 

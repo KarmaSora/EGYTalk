@@ -33,7 +33,7 @@
       type="text"
       name="commentMsg"
       id="CommentForPost"
-      Value="post you comment here!"
+      placeholder="post you comment here!"
    />
 
    <input type="submit" name="commentButton" value="svara" />

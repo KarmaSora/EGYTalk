@@ -17,11 +17,7 @@
       if (!$user.auth) {
          goto("/login");
       } else {
-       //  name = $user.userdata.firstname + " " + $user.userdata.surname;
-
-         let userUid = $user.userdata.uid;
-         console.log("this log is from [uid] from flow");
-         console.log({ userUid });
+         //  name = $user.userdata.firstname + " " + $user.userdata.surname;
       }
    });
    let Uuid = $page.params.uid;
@@ -39,17 +35,12 @@
       const allPostsData = await respons.json();
       console.log({ allPostsData });
 
-      if(allPostsData && allPostsData.length > 0){
-      retrievedUerUID = allPostsData[0].uid;
-      retrievedUserFirstname = allPostsData[0].firstname;
-      retrievedUserSurname = allPostsData[0].surname;
-   
-      console.log("------");
-      console.log({ retrievedUerUID });
-      console.log({ retrievedUserFirstname });
-      console.log({ retrievedUserSurname });
-      console.log("------");
-      nameV2 = retrievedUserFirstname + " " + retrievedUserSurname;
+      if (allPostsData && allPostsData.length > 0) {
+         retrievedUerUID = allPostsData[0].uid;
+         retrievedUserFirstname = allPostsData[0].firstname;
+         retrievedUserSurname = allPostsData[0].surname;
+
+         nameV2 = retrievedUserFirstname + " " + retrievedUserSurname;
       }
       return allPostsData;
    }

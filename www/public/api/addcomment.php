@@ -17,21 +17,21 @@ $success = false;
 // Kod!
 if (isset($_POST['commentMsg'])) {
 
-    $postMsg = $_POST['commentMsg'];
+    $msgComment = $_POST['commentMsg'];
   //  $postMsg = "this is a comment, testing commentFOrm";
 
-    $result['comment'] = $postMsg;
+    $result['comment'] = $msgComment;
 
     $pid = $_POST['pidNumberForComment'];
     $uid = $_SESSION['uid'];
     $result['sessUID'] = $uid;
 
-    $stmt = $db->addComment($uid, $pid, $postMsg);
+    $stmt = $db->addComment($uid, $pid, $msgComment);
 
     $success = true; // sätter success till true efter att ha lagt till post till databasen
     $result['MsgUserID'] = $uid;
     $result['MsgPostID'] = $pid;
-    $result['MsgComment'] = $postMsg;
+    $result['MsgComment'] = $msgComment;
     $result['sqlStmt'] = $stmt;
 
 

@@ -2,6 +2,7 @@
    import { user } from "$lib/stores/user.js";
    import { goto } from "$app/navigation";
    import { page } from "$app/stores";
+   import { each } from "svelte/internal";
 
    async function signOut() {
       if ($user.auth) {
@@ -11,9 +12,21 @@
          goto("/login");
       }
    }
+
+   async function findUsers(e) {
+      const data = new FormData(e.target);
+      const url = "/api/searchData.php";
+
+      const respons = await fetch(url, {
+         method: "post",
+         credentials: "include",
+         body: data,
+      });
+      const searchData = await respons.json();
+   }
 </script>
 
-<form>
+<form >
    <input type="text" name="searchUsr" placeholder="Sök vänner" size="30" />
    <button class="search">
       <img src="/images/searchIcon.png" alt="Search" />
@@ -28,15 +41,20 @@
          </a>
       </li>
       <li>
-         <a href="/flow/{$user.userdata.uid}"
-            class:active={$page.url.pathname.startsWith("/flow")}>Flöde</a>
+         <a
+            href="/flow/{$user.userdata.uid}"
+            class:active={$page.url.pathname.startsWith("/flow")}>Flöde</a
+         >
       </li>
       <li>
-         <a href="/friends" class:active={"/friends" === $page.url.pathname}>Vänner</a>
+         <a href="/friends" class:active={"/friends" === $page.url.pathname}
+            >Vänner</a
+         >
       </li>
       <li>
          <a href="/settings" class:active={"/settings" === $page.url.pathname}>
-            Inställningar</a>
+            Inställningar</a
+         >
       </li>
    </ul>
 </nav>
@@ -83,7 +101,6 @@
    }
 
    button {
-
       background-color: transparent;
       border: none;
 

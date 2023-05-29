@@ -98,28 +98,27 @@ class DbEgyTalk
    {
       $posts = [];
 
-  $sqlkod = "SELECT post.*, user.firstname, user.surname FROM post JOIN user ON post.uid = user.uid ORDER BY post.date";
-  $stmt = $this->db->prepare($sqlkod);
-  $stmt->execute();
-  $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $sqlkod = "SELECT post.*, user.firstname, user.surname FROM post JOIN user ON post.uid = user.uid ORDER BY post.date DESC";
+      $stmt = $this->db->prepare($sqlkod);
+      $stmt->execute();
+      $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-  $sqlkodGetComments = "SELECT comment.*, user.firstname, user.surname FROM comment JOIN post ON comment.pid = post.pid JOIN user ON user.uid = comment.uid ORDER BY comment.date";
-  $stmt2 = $this->db->prepare($sqlkodGetComments);
-  $stmt2->execute();
-  $arrayOfComments = $stmt2->fetchAll(PDO::FETCH_ASSOC);      
+      $sqlkodGetComments = "SELECT comment.*, user.firstname, user.surname FROM comment JOIN post ON comment.pid = post.pid JOIN user ON user.uid = comment.uid ORDER BY comment.date";
+      $stmt2 = $this->db->prepare($sqlkodGetComments);
+      $stmt2->execute();
+      $arrayOfComments = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-  for ($i = 0; $i < count($posts); $i++) {
-    $posts[$i]['comments'] = [];
-    for ($j = 0; $j < count($arrayOfComments); $j++) {
-      if ($arrayOfComments[$j]['pid'] == $posts[$i]['pid']) {
-         
-      //  $posts[$i]['comments']['comment_txt'] = $arrayOfComments[$j]['comment_txt'];
-        $posts[$i]['comments'][] = $arrayOfComments[$j];
+      for ($i = 0; $i < count($posts); $i++) {
+         $posts[$i]['comments'] = [];
+         for ($j = 0; $j < count($arrayOfComments); $j++) {
+            if ($arrayOfComments[$j]['pid'] == $posts[$i]['pid']) {
 
+               //  $posts[$i]['comments']['comment_txt'] = $arrayOfComments[$j]['comment_txt'];
+               $posts[$i]['comments'][] = $arrayOfComments[$j];
+            }
+         }
       }
-    }
-  }
 
 
 
@@ -138,7 +137,7 @@ class DbEgyTalk
    function getPosts($uid)
    {
       $posts = [];
-   
+
       $sqlkod = "SELECT post.*,user.uid,user.firstname,user.surname,user.username FROM post JOIN user ON user.uid = :userID ORDER BY post.date";
       $newSQLCODE = "SELECT post.*, user.firstname, user.surname FROM post JOIN user ON post.uid = user.uid WHERE post.uid = :userID ORDER BY post.date";
       $stmt = $this->db->prepare($newSQLCODE);
@@ -155,9 +154,8 @@ class DbEgyTalk
          $posts[$i]['comments'] = [];
          for ($j = 0; $j < count($arrayOfComments); $j++) {
             if ($arrayOfComments[$j]['pid'] == $posts[$i]['pid']) {
-              // $posts[$i]['comments'][] = $arrayOfComments[$j]['comment_txt'];
-              $posts[$i]['comments'][] = $arrayOfComments[$j];
-
+               // $posts[$i]['comments'][] = $arrayOfComments[$j]['comment_txt'];
+               $posts[$i]['comments'][] = $arrayOfComments[$j];
             }
          }
       }
@@ -222,7 +220,6 @@ class DbEgyTalk
       $stmt->bindValue(":commentTxt", $cleanedComment);
 
       return $stmt->execute();
-
    }
 
    /**
