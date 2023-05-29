@@ -4,6 +4,7 @@
    let result = { success: true };
 
    async function addPost(e) {
+      update.set(false);
       const data = new FormData(e.target);
       const url = "/api/addpost.php";
 
@@ -16,6 +17,13 @@
 
       console.log({ respons });
       console.log({ PostData });
+      update.set(true);
+      console.log({$update});
+
+   }
+   console.log({$update});
+   $:if($update){
+      location.reload();
    }
 </script>
 

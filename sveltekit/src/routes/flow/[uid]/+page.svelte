@@ -18,6 +18,7 @@
          goto("/login");
       } else {
          //  name = $user.userdata.firstname + " " + $user.userdata.surname;
+       //  console.log({update});
       }
    });
    let Uuid = $page.params.uid;
@@ -50,7 +51,6 @@
 
 <section>
    <PostForm />
-   <!--  (1) Postform, (2) Post , (3) comments-->
    {#await getPostsByID()}
       <Load />
    {:then allPostsData}

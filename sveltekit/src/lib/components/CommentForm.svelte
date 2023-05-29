@@ -4,6 +4,7 @@
    export let postID;
 
    async function addComment(e) {
+      update.set(false);
       const data = new FormData(e.target);
       const url = "/api/addcomment.php";
 
@@ -14,12 +15,16 @@
       });
       const CommentData = await respons.json();
 
-      //  console.log({respons});
-      //    console.log({CommentData});
+      update.set(true);
+      console.log({$update});
+
    }
-   // console.log("---pidNum---");
-   //console.log({postID});
-   //  console.log("---pidNum---");
+   
+  // console.log({$update});
+   $:if($update){
+      location.reload();
+   }
+
 </script>
 
 <form on:submit|preventDefault={addComment}>
